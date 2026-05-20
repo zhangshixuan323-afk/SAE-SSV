@@ -27,6 +27,8 @@ SAE_RELEASE = "gemma-scope-9b-pt-res-canonical"
 SAE_ID = "layer_20/width_16k/canonical"
 SPARSITY_THRESHOLD = 1e-2
 steer_scale = [4.0, 6.0, -4.0, -6.0]
+# Number of class A test samples to generate. Set to None to use all samples.
+GENERATION_SAMPLES = 200
 # Dataset selection: "politics", "truthfulness", or "sentiment"
 DATASET_TYPE = "sentiment"
 OUTPUT_DIR = f"probe_results_{DATASET_TYPE}_layer{TARGET_LAYER}"
@@ -147,8 +149,13 @@ print(f"SSV saved to {OUTPUT_DIR}/{DATASET_TYPE}_ssv_results.pt")
 
 # ==================== Test SSV ====================
 print(f"\nTesting SSV on {CLASS_A_NAME} test samples...")
-class_a_test = [item['text'] for item in test_dataset if item['label'] == 0]
-print(f"Test samples: {len(class_a_test)}")
+class_a_test_all = [item['text'] for item in test_dataset if item['label'] == 0]
+if GENERATION_SAMPLES is None:
+    class_a_test = class_a_test_all
+else:
+    class_a_test = class_a_test_all[:GENERATION_SAMPLES]
+print(f"Available test samples: {len(class_a_test_all)}")
+print(f"Generating samples: {len(class_a_test)}")
 
 test_results = trainer.test(
     ssv=ssv,

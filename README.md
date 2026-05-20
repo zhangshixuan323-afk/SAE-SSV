@@ -41,6 +41,7 @@ SAE_RELEASE = "gemma-scope-9b-pt-res-canonical"
 SAE_ID = "layer_20/width_16k/canonical"
 SPARSITY_THRESHOLD = 1e-1          # L1 threshold for feature selection
 steer_scale = [4.0, 5.0, 6.0, -4.0, -5.0, -6.0]
+GENERATION_SAMPLES = 200           # Number of generated test samples, None for all
 DATASET_TYPE = "sentiment"         # "politics", "truthfulness", or "sentiment"
 OUTPUT_DIR = f"probe_results_{DATASET_TYPE}_layer{TARGET_LAYER}"
 ```
